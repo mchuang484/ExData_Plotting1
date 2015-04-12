@@ -1,0 +1,10 @@
+epc <- read.table("household_power_consumption.txt", header=TRUE, sep=";", na.string = "?");
+epc$DateTime <- paste(epc$Date, epc$Time);
+epc$Date2 <- paste(epc$Date, epc$Time);
+epc$Date2 <- as.Date(epc$Date2, format = "%d/%m/%Y %H:%M:%S");
+library(dplyr);
+epcFileSubset <- filter(epc, Date2 >= as.Date("2007-02-01 00:00:00"), Date2 < as.Date("2007-02-03 00:00:00"));
+library(datasets);
+png(filename="plot2.png");
+with(epcFileSubset, plot(as.POSIXct(strptime(DateTime, "%d/%m/%Y %H:%M:%S")), Global_active_power, type = "l", xlab = "", ylab = "Global Active Power (Kilowatts)"));
+dev.off();
